@@ -2,7 +2,7 @@ import os
 import threading
 from glob import glob
 
-from scapy.sendrecv import sniff
+from scapy.all import sniff
 import lldp
 
 def probe_lldp(probe):
