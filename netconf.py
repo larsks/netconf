@@ -36,9 +36,9 @@ def render(ifaces, pairs):
     print 'digraph net {'
     print 'graph [rankdir=LR]'
     print
-    for k,v in ifaces.items():
-        nodeattr = ' '.join(['%s=%s' % (n,v) for n,v in attrs[k].items()])
-        for iface in v:
+    for iftype,ifaces in ifaces.items():
+        nodeattr = ' '.join(['%s=%s' % (n,v) for n,v in attrs[iftype].items()])
+        for iface in ifaces:
             print '"%s" [%s]' % (iface, nodeattr)
 
     for a,b in pairs:
