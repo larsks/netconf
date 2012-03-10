@@ -37,9 +37,12 @@ def render(ifaces, pairs):
     print 'graph [rankdir=LR]'
     print
     for iftype,ifaces in ifaces.items():
+        print 'subgraph {'
+        print 'rank = same'
         nodeattr = ' '.join(['%s=%s' % (n,v) for n,v in attrs[iftype].items()])
         for iface in ifaces:
             print '"%s" [%s]' % (iface, nodeattr)
+        print '}'
 
     for a,b in pairs:
         print '"%s" -> "%s"' % (a,b)
