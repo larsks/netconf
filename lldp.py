@@ -1,6 +1,6 @@
 import struct
 
-LLDP_ETH = 0x88cc
+LLDP_ETHER_TYPE = 0x88cc
 
 LLDP_TYPE_MASK = 0xfe00
 LLDP_LENGTH_LEN = 9
@@ -34,6 +34,8 @@ class LLDPDU (dict):
 
             tldata = data[:tllen]
             data = data[tllen:]
+
+            print (tltype, tllen, tldata)
 
             if not LLDP_TYPES[tltype] in self:
                 self[LLDP_TYPES[tltype]] = []

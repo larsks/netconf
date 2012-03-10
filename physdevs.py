@@ -7,9 +7,9 @@ import lldp
 
 def probe_lldp(probe):
     try:
-        p = sniff(iface=probe['iface'], filter='ether proto 0x88cc',
-            count=1, timeout=60)
-        probe['raw'] = p
+        p = sniff(iface=probe['iface'],
+                filter='ether proto %s' % lldp.LLDP_ETHER_TYPE,
+                count=1, timeout=60)
         probe['lldp'] = lldp.LLDPDU(p[0].load)
         probe['status'] = True
     except Exception, detail:
