@@ -14,10 +14,10 @@ import vlans
 import physdevs
 
 attrs = {
-        'physdevs'  : {'color':'firebrick1'},
-        'bonds'     : {'color':'darkgoldenrod1'},
-        'bridges'   : {'color':'cornflowerblue'},
-        'vlans'     : {'color':'darkolivegreen2'},
+        'physdevs'  : {'color':'firebrick1', 'style':'filled'},
+        'bonds'     : {'color':'darkgoldenrod1', 'style':'filled'},
+        'bridges'   : {'color':'cornflowerblue', 'style':'filled'},
+        'vlans'     : {'color':'darkolivegreen2', 'style':'filled'},
         }
 
 def discover():
