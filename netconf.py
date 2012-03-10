@@ -9,7 +9,7 @@ import lldp
 import bonds
 import bridges
 import vlans
-#import physdevs
+import physdevs
 
 attrs = {
         '__default__': {
