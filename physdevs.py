@@ -2,12 +2,15 @@ import os
 import threading
 from glob import glob
 
+from scapy.sendrecv import sniff
+import lldp
+
 def probe_lldp(probe):
     try:
-        p = sniff(iface=iface, filter='ether proto 0x88cc',
+        p = sniff(iface=probe['iface'], filter='ether proto 0x88cc',
             count=1, timeout=60)
         probe['raw'] = p
-        probe['lldp'] = tlv.LLDPDU(p[0].load)
+        probe['lldp'] = lldp.LLDPDU(p[0].load)
         probe['status'] = True
     except Exception, detail:
         probe['status'] = False
@@ -22,7 +25,7 @@ def probe():
         iface = os.path.basename(os.path.dirname(ifdir))
         ifaces.append(iface)
 
-        probes[iface] = {}
+        probes[iface] = {'iface': iface}
 
         t = threading.Thread(
                 target=probe_lldp,
