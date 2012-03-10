@@ -35,8 +35,6 @@ class LLDPDU (dict):
             tldata = data[:tllen]
             data = data[tllen:]
 
-            print (tltype, tllen, tldata)
-
             if not LLDP_TYPES[tltype] in self:
                 self[LLDP_TYPES[tltype]] = []
             self[LLDP_TYPES[tltype]].append(tldata)
