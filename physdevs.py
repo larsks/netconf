@@ -3,15 +3,15 @@ import threading
 from glob import glob
 
 def probe_lldp(probe):
-	try:
-		p = sniff(iface=iface, filter='ether proto 0x88cc',
-			count=1, timeout=60)
-		probe['raw'] = p
-		probe['lldp'] = tlv.LLDPDU(p[0].load)
-		probe['status'] = True
-	except Exception, detail:
-		probe['status'] = False
-		probe['exception'] = detail
+    try:
+        p = sniff(iface=iface, filter='ether proto 0x88cc',
+            count=1, timeout=60)
+        probe['raw'] = p
+        probe['lldp'] = tlv.LLDPDU(p[0].load)
+        probe['status'] = True
+    except Exception, detail:
+        probe['status'] = False
+        probe['exception'] = detail
 
 def probe():
     ifaces = []
@@ -27,7 +27,7 @@ def probe():
         t = threading.Thread(
                 target=probe_lldp,
                 name=iface,
-                args=(probes[iface]),
+                args=(probes[iface],),
                 )
 
         probes[iface]['thread'] = t
