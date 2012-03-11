@@ -3,8 +3,8 @@ import glob
 import errno
 
 def probe():
-	ifaces = []
-	pairs = []
+    ifaces = []
+    pairs = []
     try:
         for iface in open('/sys/class/net/bonding_masters').read().split():
             ifaces.append(iface)
@@ -14,5 +14,5 @@ def probe():
         if detail.errno != errno.ENOENT:
             raise
 
-	return (ifaces, pairs)
+    return (ifaces, pairs)
 
