@@ -7,7 +7,7 @@ import lldp
 
 def probe_lldp(iface, probe):
     try:
-        p = sniff(iface=iface],
+        p = sniff(iface=iface,
                 filter='ether proto %s' % lldp.LLDP_ETHER_TYPE,
                 count=1, timeout=60)
         probe['lldp'] = lldp.LLDPDU(p[0].load)

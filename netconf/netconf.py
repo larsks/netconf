@@ -106,8 +106,11 @@ def render(data):
 
     print '}'
 
-if __name__ == '__main__':
+def main():
     render(discover())
+
+if __name__ == '__main__':
+    main()
 # The following can be used when testing the rendering code:
 #    render({
 #        'ports': [['eth104/1/48', 'eth104/1/46'],[]],

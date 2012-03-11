@@ -1,0 +1,5 @@
+#!/usr/bin/python
+
+import netconf.netconf
+netconf.netconf.main()
+
