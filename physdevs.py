@@ -5,9 +5,9 @@ from glob import glob
 from scapy.all import sniff
 import lldp
 
-def probe_lldp(probe):
+def probe_lldp(iface, probe):
     try:
-        p = sniff(iface=probe['iface'],
+        p = sniff(iface=iface],
                 filter='ether proto %s' % lldp.LLDP_ETHER_TYPE,
                 count=1, timeout=60)
         probe['lldp'] = lldp.LLDPDU(p[0].load)
@@ -17,6 +17,10 @@ def probe_lldp(probe):
         probe['exception'] = detail
 
 def probe():
+    '''Listens on all physical interfaces in parallel for LLDPDUs.  Starts
+    a new thread for each interface, then waits for everything to complete
+    (or timeout).'''
+
     ifaces = []
     pairs = []
     probes = {}
@@ -30,7 +34,7 @@ def probe():
         t = threading.Thread(
                 target=probe_lldp,
                 name=iface,
-                args=(probes[iface],),
+                args=(iface, probes[iface],),
                 )
 
         probes[iface]['thread'] = t

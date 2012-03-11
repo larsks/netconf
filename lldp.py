@@ -1,7 +1,9 @@
+# Support for LLDP (link layer discovery protocol):
+# https://en.wikipedia.org/wiki/Link_Layer_Discovery_Protocol
+
 import struct
 
 LLDP_ETHER_TYPE = 0x88cc
-
 LLDP_TYPE_MASK = 0xfe00
 LLDP_LENGTH_LEN = 9
 LLDP_LENGTH_MASK = 0x01ff
@@ -26,19 +28,25 @@ class LLDPDU (dict):
         self.data = data
 
         while True:
+            # The first 16 bits contain the type (7 bits) and
+            # length (9 bits) of the value.
             tl = struct.unpack('!H', data[:2])[0]
             data = data[2:]
 
             tltype = (tl & LLDP_TYPE_MASK) >> LLDP_LENGTH_LEN
             tllen = (tl & LLDP_LENGTH_MASK)
 
-            tldata = data[:tllen]
+            tlvalue = data[:tllen]
             data = data[tllen:]
 
+            # Right now everything is a list, but this is realy
+            # just an artifact of how we're treating organization
+            # tlvs.
             if not LLDP_TYPES[tltype] in self:
                 self[LLDP_TYPES[tltype]] = []
-            self[LLDP_TYPES[tltype]].append(tldata)
+            self[LLDP_TYPES[tltype]].append(tlvalue)
 
+            # Exit when we have consumed everything.
             if not data: break
 
 if __name__ == '__main__':

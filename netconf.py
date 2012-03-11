@@ -11,7 +11,11 @@ import bridges
 import vlans
 import physdevs
 
+# This defines attributes used when generating the
+# dot output.
 attrs = {
+        # default attributes that will be applied to all interface
+        # types unless overridden by a more specific setting.
         '__default__': {
             'subgraph': {
                 'rank' : 'same',
@@ -20,6 +24,7 @@ attrs = {
                 'style' : 'filled',
                 },
             },
+
         'ports': {
             'node': {
                 'shape' : 'box',
@@ -50,7 +55,6 @@ attrs = {
             },
         }
 
-
 def discover():
     data = {}
 
@@ -64,6 +68,8 @@ def discover():
     return data
 
 def render(data):
+    '''render() generates the dot output.'''
+
     print 'digraph net {'
     print '  rankdir=LR;'
     print
@@ -102,6 +108,7 @@ def render(data):
 
 if __name__ == '__main__':
     render(discover())
+# The following can be used when testing the rendering code:
 #    render({
 #        'ports': [['eth104/1/48', 'eth104/1/46'],[]],
 #        'physdevs': [['em1', 'em2'],[('em1', 'eth104/1/48'), ('em2',
