@@ -61,7 +61,7 @@ def discover():
     for x in [ physdevs, bonds, bridges, vlans ]:
         ifaces, pairs = x.probe()
 
-        data[x.__name__] = (ifaces, pairs)
+        data[x.__name__.split('.')[-1]] = (ifaces, pairs)
         if x.__name__ == 'physdevs':
             data['ports'] = ([x[1] for x in pairs], [])
 
