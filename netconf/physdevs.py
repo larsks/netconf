@@ -46,7 +46,7 @@ def probe():
         if thread is not threading.currentThread():
             thread.join()
             if 'lldp' in probe:
-                pairs.append((iface, probe['lldp']['port_id'][0][1:]))
+                pairs.append((iface, probe['lldp']['port_id'][1:]))
 
     return (ifaces, pairs)
  
