@@ -4,8 +4,6 @@ import os
 import sys
 import threading
 
-import lldp
-
 import bonds
 import bridges
 import vlans

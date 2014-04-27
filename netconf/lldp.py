@@ -20,7 +20,7 @@ LLDP_TLV_TYPE_MANAGEMENT_ADDRESS  = 8
 LLDP_TLV_TYPE_ORG                 = 127
 
 LLDP_TLV_TYPES = {
-    LLDP_TLV_TYPE_END                 : 'end_lldpdu',
+    LLDP_TLV_TYPE_END                 : 'end',
     LLDP_TLV_TYPE_CHASSIS_ID          : 'chassis_id',
     LLDP_TLV_TYPE_PORT_ID             : 'port_id',
     LLDP_TLV_TYPE_TTL                 : 'ttl',
@@ -31,11 +31,8 @@ LLDP_TLV_TYPES = {
     LLDP_TLV_TYPE_MANAGEMENT_ADDRESS  : 'management_address',
 
     LLDP_TLV_TYPE_ORG                 : 'org_tlv',
-    }
+}
 
-# XXX: ...returns a series of (type, name, data) tuples, where
-# type is the TLV type, name is a readable label, and data is the
-# type-dependent data.
 
 def parse_tlv(buffer):
     '''Turn a buffer containing TLV data into an iterator over the
@@ -50,6 +47,7 @@ def parse_tlv(buffer):
         buffer = buffer[tlvlen+2:]
 
         yield(tlvtype, tlvdata)
+
 
 class LLDPDU (dict):
     '''Parse the TLV (type-length-value) fields in an LLDP data unit.'''
@@ -66,10 +64,10 @@ class LLDPDU (dict):
                 self[LLDP_TLV_TYPES[tlv[0]]] = tlv[1]
 
             # Exit when we have consumed everything.
-            if not data: break
+            if not data:
+                break
 
 if __name__ == '__main__':
-    import sys
     import binascii
 
     b = binascii.a2b_hex(open('pdu').read().strip())
