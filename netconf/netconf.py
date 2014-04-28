@@ -1,8 +1,18 @@
-#!/usr/bin/python
+# Copyright (C) 2014 Lars Kellogg-Stedman <lars@oddbit.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import sys
-import threading
 
 import bonds
 import bridges
@@ -12,51 +22,52 @@ import physdevs
 # This defines attributes used when generating the
 # dot output.
 attrs = {
-        # default attributes that will be applied to all interface
-        # types unless overridden by a more specific setting.
-        '__default__': {
-            'subgraph': {
-                'rank' : 'same',
-                },
-            'node': {
-                'style' : 'filled',
-                },
-            },
+    # default attributes that will be applied to all interface
+    # types unless overridden by a more specific setting.
+    '__default__': {
+        'subgraph': {
+            'rank': 'same',
+        },
+        'node': {
+            'style': 'filled',
+        },
+    },
 
-        'ports': {
-            'node': {
-                'shape' : 'box',
-                },
-            },
-        'physdevs': {
-            'node': {
-                'color' : 'firebrick1',
-                },
-            },
-        'bonds': {
-            'node': {
-                'color' : 'darkgoldenrod1',
-                },
-            },
-        'bridges': {
-            'subgraph': {
-                'rank' : 'min',
-                },
-            'node': {
-                'color' : 'cornflowerblue',
-                },
-            },
-        'vlans': {
-            'node': {
-                'color' : 'darkolivegreen2',
-                },
-            },
-        }
+    'ports': {
+        'node': {
+            'shape': 'box',
+        },
+    },
+    'physdevs': {
+        'node': {
+            'color': 'firebrick1',
+        },
+    },
+    'bonds': {
+        'node': {
+            'color': 'darkgoldenrod1',
+        },
+    },
+    'bridges': {
+        'subgraph': {
+            'rank': 'min',
+        },
+        'node': {
+            'color': 'cornflowerblue',
+        },
+    },
+    'vlans': {
+        'node': {
+            'color': 'darkolivegreen2',
+        },
+    },
+}
+
 
 def discover():
     data = {}
 
-    for x in [ physdevs, bonds, bridges, vlans ]:
+    for x in [physdevs, bonds, bridges, vlans]:
         ifaces, pairs = x.probe()
         iftype = x.__name__.split('.')[-1]
 
@@ -66,6 +77,7 @@ def discover():
 
     return data
 
+
 def render(data):
     '''render() generates the dot output.'''
 
@@ -73,7 +85,7 @@ def render(data):
     print '  rankdir=LR;'
     print
 
-    for iftype in [ 'ports', 'physdevs', 'bonds', 'bridges', 'vlans' ]:
+    for iftype in ['ports', 'physdevs', 'bonds', 'bridges', 'vlans']:
 
         subgraph_attrs = {}
         subgraph_attrs.update(attrs['__default__']['subgraph'])
@@ -87,11 +99,11 @@ def render(data):
         print '  /* %s */' % iftype
         print '  subgraph {'
 
-        for k,v in subgraph_attrs.items():
-            print '    %s=%s ;' % (k,v)
+        for k, v in subgraph_attrs.items():
+            print '    %s=%s ;' % (k, v)
 
         print '    node [%s] ;' % (', '.join(
-            ['%s=%s' % (n,v) for n,v in node_attrs.items()]))
+            ['%s=%s' % (n, v) for n, v in node_attrs.items()]))
         print
         for iface in data[iftype][0]:
             print '    "%s" ;' % iface
@@ -99,11 +111,12 @@ def render(data):
         print '  }'
 
     print
-    for iftype in [ 'ports', 'physdevs', 'bonds', 'bridges', 'vlans' ]:
-        for k,v in data[iftype][1]:
-            print '  "%s" -> "%s" ;' % (k,v)
+    for iftype in ['ports', 'physdevs', 'bonds', 'bridges', 'vlans']:
+        for k, v in data[iftype][1]:
+            print '  "%s" -> "%s" ;' % (k, v)
 
     print '}'
+
 
 def main():
     render(discover())
